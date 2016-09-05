@@ -22,11 +22,15 @@ minetest.register_on_joinplayer(function(player)
 	local rounded_pos = {x=round(pos.x),y=round(pos.y)+1,z=round(pos.z)}
 	local wielded_item = player:get_wielded_item():get_name()
 	if wielded_item ~= "default:torch" and wielded_item ~= "light:streetlight" then
-		-- Neuberechnung des Lichts erzwingen
-		-- пересчет силы света
-		minetest.set_node(rounded_pos,{type="node",name="air"})
+		local is_light  = minetest.get_node_or_nil(rounded_pos)
+		if is_light ~= nil and is_light.name == "walking_light:light" then
+			-- minetest.remove_node(rounded_pos)
+			-- Erzwinge Neuberechnung des Lichts
+			-- пересчет силы света
+			minetest.set_node(rounded_pos,{type="node",name="air"})
+		end
 	end
-	print("Регистрация "..player_name)
+	--print("Регистрация "..player_name)
 	player_positions[player_name] = {}
 	player_positions[player_name]["x"] = rounded_pos.x;
 	player_positions[player_name]["y"] = rounded_pos.y;
