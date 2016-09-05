@@ -52,6 +52,14 @@ minetest.register_chatcommand("sethome", {
     func = function(name)
         local player = minetest.get_player_by_name(name)
         local pos = player:getpos()
+
+		if minetest.get_modpath("protector_lott")~=nil then
+			if minetest.is_protected(pos, name) then 
+				minetest.chat_send_player(name, SL("Home not set!"))
+				return 
+			end
+		end
+        
         homepos[player:get_player_name()] = pos
         minetest.chat_send_player(name, SL("Home set!"))
         changed = true
